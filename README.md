@@ -1,7 +1,7 @@
 # AWGAN
 code for paper: AWGAN: A Powerful Batch Effect Removal Model
 
-#Package Requirement
+# Package Requirement
 
 To run AWGAN, we suggest you install the python environment with the version-specific package listed in this table. 
 

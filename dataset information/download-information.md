@@ -51,7 +51,7 @@ https://scanpy-tutorials.readthedocs.io/en/latest/integrating-data-using-ingest.
 #### 8. Simulate Dataset
 
 <ul>
-    <li><a href=https://cloud.tsinghua.edu.cn/f/bb0b07fba6764cb4a0ca/?dl=1>https://cloud.tsinghua.edu.cn/f/bb0b07fba6764cb4a0ca/?dl=1</a></li>
+    <li><a href=https://github.com/ChineseBest/AWGAN/tree/main/Example%20Code/Simulated%20data>https://github.com/ChineseBest/AWGAN/tree/main/Example%20Code/Simulated%20data</a></li>
 </ul>
 
 #### 9. PBMC 10X
