@@ -57,8 +57,8 @@ https://scanpy-tutorials.readthedocs.io/en/latest/integrating-data-using-ingest.
 #### 9. PBMC 10X
 
 <ul>
-    <li><a href=https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc1kv2>https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc1kv2</a></li>
-    <li><a href=https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc1kv3>https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc1kv3</a></li>
+    <li><a href=https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc1kv2>https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc_1k_v2</a></li>
+    <li><a href=https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc1kv3>https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc_1k_v3</a></li>
 </ul>
 
 #### 10. Human_cell_atlas Dataset
