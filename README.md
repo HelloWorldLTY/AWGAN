@@ -1,6 +1,10 @@
 # AWGAN
 code for paper: AWGAN: A Powerful Batch Effect Removal Model
 
+#Download
+To download this tool, please use this link:\\
+git clone https://github.com/ChineseBest/AWGAN.git
+
 # Package Requirement
 
 To run AWGAN, we suggest you install the python environment with the version-specific package listed in this table. 
