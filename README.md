@@ -4,7 +4,9 @@ code for paper: AWGAN: A Powerful Batch Effect Removal Model
 #Download
 To download this tool, please use this link:
 
+'''code
 git clone https://github.com/ChineseBest/AWGAN.git
+'''
 
 # Package Requirement
 
