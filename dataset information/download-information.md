@@ -28,6 +28,7 @@ In order to facilitate your use, we have provided the download address for all t
 <ul>
     <li><a href=https://scanpy-tutorials.readthedocs.io/en/latest/integrating-data-using-ingest.html>
 https://scanpy-tutorials.readthedocs.io/en/latest/integrating-data-using-ingest.html</a></li>
+    <li><a href=https://www.10xgenomics.com/resources/datasets/fresh-68-k-pbm-cs-donor-a-1-standard-1-1-0>https://www.10xgenomics.com/resources/datasets/fresh-68-k-pbm-cs-donor-a-1-standard-1-1-0</a></li>
 </ul>
 
 #### 5. MHSP Dataset
@@ -48,34 +49,22 @@ https://scanpy-tutorials.readthedocs.io/en/latest/integrating-data-using-ingest.
     <li><a href=https://github.com/JinmiaoChenLab/Batch-effect-removal-benchmarking/tree/master/Data/dataset5>https://github.com/JinmiaoChenLab/Batch-effect-removal-benchmarking/tree/master/Data/dataset5</a></li>
 </ul>
 
-#### 8. Simulate Dataset
 
-<ul>
-    <li><a href=https://github.com/ChineseBest/AWGAN/tree/main/Example%20Code/Simulated%20data>https://github.com/ChineseBest/AWGAN/tree/main/Example%20Code/Simulated%20data</a></li>
-</ul>
-
-#### 9. PBMC 10X
-
-<ul>
-    <li><a href=https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc1kv2>https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc_1k_v2</a></li>
-    <li><a href=https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc1kv3>https://support.10xgenomics.com/single-cell-gene-expression/datasets/3.0.0/pbmc_1k_v3</a></li>
-</ul>
-
-#### 10. Human_cell_atlas Dataset
+#### 8. Human Cell Atlas Dataset
 
 <ul>
     <li>ica cord blood <a href=https://cloud.tsinghua.edu.cn/f/e8bf96a6ff9944299877/?dl=1>https://cloud.tsinghua.edu.cn/f/e8bf96a6ff9944299877/?dl=1</a></li>
     <li>ica bone marrow <a href=https://cloud.tsinghua.edu.cn/f/9b4ce1e2180b464ebbb0/?dl=1>https://cloud.tsinghua.edu.cn/f/9b4ce1e2180b464ebbb0/?dl=1</a></li>
 </ul>
 
-#### 11. Mouse Retina Dataset
+#### 9. Mouse Retina Dataset
 
 <ul>
     <li>ica cord blood <a href=https://github.com/JinmiaoChenLab/Batch-effect-removal-benchmarking/tree/master/Data/dataset7>https://github.com/JinmiaoChenLab/Batch-effect-removal-benchmarking/tree/master/Data/dataset7</a></li>
 </ul>
 
 
-#### 12. Mouse Brain Dataset
+#### 10. Mouse Brain Dataset
 
 <ul>
     <li>Smart-seq <a href=https://github.com/JinmiaoChenLab/Batch-effect-removal-benchmarking/tree/master/Data/dataset9/downsample>https://github.com/JinmiaoChenLab/Batch-effect-removal-benchmarking/tree/master/Data/dataset9/downsample</a></li>
@@ -84,7 +73,7 @@ https://scanpy-tutorials.readthedocs.io/en/latest/integrating-data-using-ingest.
 
 
 
-#### 13. CRC Dataset
+#### 11. CRC Dataset
 
 <ul>
     <li>Smart-seq <a href=https://cloud.tsinghua.edu.cn/f/7c2adec2b6404d70b2c0/?dl=1>https://cloud.tsinghua.edu.cn/f/7c2adec2b6404d70b2c0/?dl=1</a></li>
