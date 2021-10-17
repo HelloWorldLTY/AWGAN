@@ -26,7 +26,7 @@ import numpy as np
 import os
 import pandas as pd
 import torch.optim.lr_scheduler as lr_s 
-
+from scipy.spatial.distance import cdist
 
 #calculate cos distence
 @jit(nopython=True)
@@ -34,17 +34,33 @@ def pdist(vec1,vec2):
   return vec1@vec2/(np.linalg.norm(vec1)*np.linalg.norm(vec2))
 
 #calculate correlation index
+#calculate cos distence
 @jit(nopython=True)
 def find_correlation_index(frame1, frame2):
-  result=[(1,1,1) for i in range(len(frame2))]
+  result=[(1,1) for _ in range(len(frame2))]
   for i in range(len(frame2)):
-    distlist=[]
+    max_dist = -10
+    it1=0
+    it2=0
     for j in range(len(frame1)):
       dist = pdist(frame2[i],frame1[j])
-      distlist.append((i,j,dist))
-    distlist.sort(key=lambda x:x[2],reverse = True)
-    result[i] = distlist[0]
+      if dist>max_dist:
+        max_dist = dist
+        it1 = i
+        it2 = j 
+    result[i] = (it1, it2)
   return result
+
+#another method used for calculating correlation index
+def find_correlation_index(frame1, frame2, size=3000):
+  randomlist = np.array([i for i in range(len(frame1))])
+  pick_list = np.random.choice(randomlist, size=size, replace=False)
+  distlist =  cdist(frame2,frame1[pick_list],metric='cosine')
+  result = np.argmin(distlist,axis=1)
+  result1 = []
+  for i in range(len(frame2)):
+    result1.append((i,pick_list[result[i]]))
+  return result1
 
 def training_set_generator(frame1,frame2,ref,batch):
       common_pair = find_correlation_index(frame1,frame2)
@@ -54,6 +70,7 @@ def training_set_generator(frame1,frame2,ref,batch):
     result.append(ref[i[1],:])
     result1.append(batch[i[0],:])
   return np.array(result),np.array(result1)
+
 
 np.random.seed(999)
 torch.manual_seed(999)
@@ -281,7 +298,6 @@ def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
       real_out = D(true_data)
       real_label_loss = -torch.mean(real_out)
 
-      # err_D.append(real_label_loss.cpu().float())
 
       # train use WGAN
 
@@ -293,10 +309,9 @@ def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
       label_loss = real_label_loss+torch.mean(fake_out)+div/lambda_1
       label_loss.backward()
 
-      # err_D.append(label_loss.cpu().item())
 
       d_optimizer.step()
-      # scheduler_D.step()
+
   
       #train G
 
@@ -304,13 +319,12 @@ def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
       real_output = D(real_out)
 
       real_loss1 = -torch.mean(real_output)
-      # err_G.append(real_loss1.cpu().item())
 
       g_optimizer.zero_grad()
 
       real_loss1.backward()
       g_optimizer.step()
-      # scheduler_G.step()
+
 
       if(time%100==0):
         print("g step loss",real_loss1)

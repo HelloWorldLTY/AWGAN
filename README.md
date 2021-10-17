@@ -28,3 +28,4 @@ To run AWGAN, we suggest you install the python environment with the version-spe
 | R packages      | kBET       | 0.99.6  |
 |                 | LISI       | 1.0.0   |
 |                 | liger      | 1.0.0   |
+|                 | Seurat     | 4.0.6   |
