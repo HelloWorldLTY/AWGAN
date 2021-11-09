@@ -1,5 +1,5 @@
 # AWGAN
-code for paper: AWGAN: A Powerful Batch Effect Removal Model
+code for paper: AWGAN: A Powerful Batch Effect Removal Model for scRNA-seq data
 
 # Download
 To download this tool, please use this link:
