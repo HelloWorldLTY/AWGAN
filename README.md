@@ -29,3 +29,9 @@ To run AWGAN, we suggest you install the python environment with the version-spe
 |                 | LISI       | 1.0.0   |
 |                 | liger      | 1.0.0   |
 |                 | Seurat     | 4.0.6   |
+
+# Reference
+Please use:
+AWGAN: A Powerful Batch Correction Model for scRNA-seq Data
+Tianyu Liu, Yuge Wang, Hong-yu Zhao
+bioRxiv 2021.11.08.467781; doi: https://doi.org/10.1101/2021.11.08.467781
