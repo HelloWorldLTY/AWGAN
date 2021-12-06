@@ -1,25 +1,14 @@
-import scprep
-import imap  #used for feature detected
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import phate
 import graphtools as gt
-import magic
 import os
 import datetime
 import scanpy as sc
 from skmisc.loess import loess
-import sklearn.preprocessing as preprocessing
-
-import umap.umap_ as umap
-
 import torch.autograd
 import torch.nn as nn
 from torch.autograd import Variable
 import torch.nn.functional as F
-from torchvision import transforms
-from torchvision import datasets
 import torch.utils.data as Data  #Data是用来批训练的模块
 from torchvision.utils import save_image
 import numpy as np
@@ -28,6 +17,7 @@ import pandas as pd
 import torch.optim.lr_scheduler as lr_s 
 from scipy.spatial.distance import cdist
 
+from numba import jit
 #calculate cos distence
 @jit(nopython=True)
 def pdist(vec1,vec2):
@@ -63,7 +53,7 @@ def find_correlation_index(frame1, frame2, size=3000):
   return result1
 
 def training_set_generator(frame1,frame2,ref,batch):
-      common_pair = find_correlation_index(frame1,frame2)
+  common_pair = find_correlation_index(frame1,frame2)
   result = []
   result1 = []
   for i in common_pair:
@@ -77,7 +67,7 @@ torch.manual_seed(999)
 torch.cuda.manual_seed_all(999)
 
 class Mish(nn.Module):
-      def __init__(self):
+  def __init__(self):
     super().__init__()
 
   def forward(self,x):
@@ -191,7 +181,7 @@ def determine_batch(val1):
   return val1
 
 def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1):
-      stop = 0
+  stop = 0
   iter = 0
   D = discriminator()
   G = generator()
@@ -265,7 +255,7 @@ def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1):
   return test_list,G
 
 def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
-      stop = 0
+  stop = 0
   iter = 0
   D = discriminator()
   G = generator()
@@ -336,7 +326,7 @@ def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
   return test_list,G
 
 def sequencing_train(ref_adata, batch_adata, batch_inf, epoch=100, batch=32, lambda_1=1/10, type_key=1):
-      ref_data_ori = ref_adata.X
+  ref_data_ori = ref_adata.X
   for bat_inf in batch_inf[1:]:
     print("##########################Training%s#####################"%(bat_inf))
     batch_data_ori = batch_adata[batch_adata.obs['batch'] == bat_inf].X

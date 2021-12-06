@@ -1,31 +1,5 @@
-import scprep
-import imap  #used for feature detected
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import phate
-import graphtools as gt
-import magic
-import os
-import datetime
+import numpy as np 
 import scanpy as sc
-from skmisc.loess import loess
-import sklearn.preprocessing as preprocessing
-
-import umap.umap_ as umap
-
-import torch.autograd
-import torch.nn as nn
-from torch.autograd import Variable
-import torch.nn.functional as F
-from torchvision import transforms
-from torchvision import datasets
-import torch.utils.data as Data  #Data是用来批训练的模块
-from torchvision.utils import save_image
-import numpy as np
-import os
-import pandas as pd
-import torch.optim.lr_scheduler as lr_s 
 
 ########## DATA PREPROCESS ##########
 #this part is same as preprocessing step in iMAP, we refer from https://github.com/Svvord/iMAP
