@@ -9,7 +9,7 @@ pip install awgan
 
 # Package Requirement
 
-To run AWGAN, we suggest you install the python environment with the version-specific package listed in this table. 
+To run AWGAN and other benchmarks, we suggest you install the python environment with the version-specific package listed in this table. 
 
 |                 | Package    | Version |
 |-----------------|------------|---------|
