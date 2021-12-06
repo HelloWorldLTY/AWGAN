@@ -2,9 +2,9 @@
 Codes for paper: AWGAN: A Powerful Batch Effect Removal Model for scRNA-seq Data
 
 # Download
-To download this tool, please use this link:
+To install this tool, please use this code:
 ```
-git clone https://github.com/HelloWorldLTY/AWGAN.git
+pip install awgan
 ```
 
 # Package Requirement
