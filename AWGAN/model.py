@@ -255,9 +255,8 @@ def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1):
       iter += 1
   print("Train step finished")
   G.eval()
-  test_data = torch.FloatTensor(train_data)
+  test_data = train_data
   if torch.cuda.is_available():
-    test_data = test_data.cuda()
     test_list = G(test_data).detach().cpu().numpy()    
   else:
     test_list = G(test_data).detach().numpy()
@@ -337,9 +336,8 @@ def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
       iter += 1
   print("Train step finished")
   G.eval()
-  test_data = torch.FloatTensor(train_data)
+  test_data = train_data
   if torch.cuda.is_available():
-    test_data = test_data.cuda()
     test_list = G(test_data).detach().cpu().numpy()    
   else:
     test_list = G(test_data).detach().numpy()    
