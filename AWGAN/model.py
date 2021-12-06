@@ -42,14 +42,12 @@ def find_correlation_index(frame1, frame2):
   return result
 
 #another method used for calculating correlation index
-def find_correlation_index(frame1, frame2, size=3000):
-  randomlist = np.array([i for i in range(len(frame1))])
-  pick_list = np.random.choice(randomlist, size=size, replace=False)
-  distlist =  cdist(frame2,frame1[pick_list],metric='cosine')
+def find_correlation_index(frame1, frame2):
+  distlist =  cdist(frame2,frame1,metric='cosine')
   result = np.argmin(distlist,axis=1)
   result1 = []
   for i in range(len(frame2)):
-    result1.append((i,pick_list[result[i]]))
+    result1.append((i,result[i]))
   return result1
 
 def training_set_generator(frame1,frame2,ref,batch):
@@ -200,11 +198,18 @@ def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1):
   MAX_ITER = train_data.shape[0]
   batch = determine_batch(MAX_ITER)
 
+  train_label = torch.FloatTensor(train_label)
+  train_data = torch.FloatTensor(train_data)
+  if torch.cuda.is_available():
+    train_label = train_label.cuda()
+    train_data = train_data.cuda()
+        
+
   for epoch_1 in range(epoch):
     print("This is ", epoch_1)
     for time in range(0,MAX_ITER,batch):
-      true_data = torch.FloatTensor(train_label[time:time+batch,:]).cuda()
-      false_data = torch.FloatTensor(train_data[time:time+batch,:]).cuda()
+      true_data = train_label[time:time+batch,:]
+      false_data = train_data[time:time+batch,:]
     
 
       #train d at first
@@ -250,8 +255,12 @@ def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1):
       iter += 1
   print("Train step finished")
   G.eval()
-  test_data = torch.FloatTensor(train_data).cuda()
-  test_list = G(test_data).detach().cpu().numpy()    
+  test_data = torch.FloatTensor(train_data)
+  if torch.cuda.is_available():
+    test_data = test_data.cuda()
+    test_list = G(test_data).detach().cpu().numpy()    
+  else:
+    test_list = G(test_data).detach().numpy()
   return test_list,G
 
 def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
@@ -274,11 +283,18 @@ def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
   MAX_ITER = train_data.shape[0]
   batch = determine_batch(MAX_ITER)
 
+  train_label = torch.FloatTensor(train_label)
+  train_data = torch.FloatTensor(train_data)
+  if torch.cuda.is_available():
+    train_label = train_label.cuda()
+    train_data = train_data.cuda()
+        
+
   for epoch_1 in range(epoch):
     print("This is ", epoch_1)
     for time in range(0,MAX_ITER,batch):
-      true_data = torch.FloatTensor(train_label[time:time+batch,:]).cuda()
-      false_data = torch.FloatTensor(train_data[time:time+batch,:]).cuda()
+      true_data = train_label[time:time+batch,:]
+      false_data = train_data[time:time+batch,:]
     
 
       #train d at first
@@ -321,8 +337,12 @@ def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
       iter += 1
   print("Train step finished")
   G.eval()
-  test_data = torch.FloatTensor(train_data).cuda()
-  test_list = G(test_data).detach().cpu().numpy()    
+  test_data = torch.FloatTensor(train_data)
+  if torch.cuda.is_available():
+    test_data = test_data.cuda()
+    test_list = G(test_data).detach().cpu().numpy()    
+  else:
+    test_list = G(test_data).detach().numpy()    
   return test_list,G
 
 def sequencing_train(ref_adata, batch_adata, batch_inf, epoch=100, batch=32, lambda_1=1/10, type_key=1):
