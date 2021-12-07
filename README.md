@@ -43,7 +43,7 @@ We can utilize this step to train the AWGAN, and get output_results as correctio
 ```
 output_results, model = awgan.model.sequencing_train(adata1,adata2,c_keys, epoch=40)
 ```
-For more information and other examples, please take a look at 
+For more information and other examples, please take a look at 'ExampleCode' folder.
 
 
 # Package Requirement
