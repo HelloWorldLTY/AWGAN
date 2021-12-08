@@ -6,7 +6,7 @@ To install this tool, please use this code:
 ```
 pip install awgan
 ```
-# Brief tutorial
+# Brief Tutorial
 
 To run our method, the first thing is to import necessary packages:
 ```
