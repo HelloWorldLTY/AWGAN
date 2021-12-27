@@ -10,6 +10,7 @@ pip install awgan
 
 To run our method, the first thing is to import necessary packages:
 ```
+import awgan
 import scprep
 import numpy as np
 import pandas as pd
