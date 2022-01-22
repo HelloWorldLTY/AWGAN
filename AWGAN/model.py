@@ -9,7 +9,7 @@ import torch.autograd
 import torch.nn as nn
 from torch.autograd import Variable
 import torch.nn.functional as F
-import torch.utils.data as Data  #Data是用来批训练的模块
+import torch.utils.data as Data  
 from torchvision.utils import save_image
 import numpy as np
 import os
@@ -100,11 +100,12 @@ class discriminator(nn.Module):
 # WGAN generator
 # Require batch normalization
 class generator(nn.Module):
-    def __init__(self):
+    def __init__(self, drop_out=0.5):
         super(generator, self).__init__()
         self.relu_f = nn.ReLU(True)
         self.gen = nn.Sequential(
             nn.Linear(2000, 1024),
+            nn.Dropout(drop_out),
             nn.BatchNorm1d(1024),
             Mish(),
 
@@ -126,7 +127,7 @@ class generator(nn.Module):
             Mish(),
 
             nn.Linear(1024, 2000),
-            nn.Dropout(0.5)
+            nn.Dropout(drop_out)
         )
 
     def forward(self, x):
@@ -134,7 +135,7 @@ class generator(nn.Module):
         return self.relu_f(gre+x)    #residual network
  
 # calculate gradient penalty
-def calculate_gradient_penalty(real_data, fake_data, D, center=1): 
+def calculate_gradient_penalty(real_data, fake_data, D, center=1, p=2): 
   eta = torch.FloatTensor(real_data.size(0),1).uniform_(0,1) 
   eta = eta.expand(real_data.size(0), real_data.size(1)) 
   cuda = True if torch.cuda.is_available() else False 
@@ -157,7 +158,7 @@ def calculate_gradient_penalty(real_data, fake_data, D, center=1):
   prob_interpolated.size()).cuda() if cuda else torch.ones( 
   prob_interpolated.size()), 
   create_graph=True, retain_graph=True)[0] 
-  grad_penalty = ((gradients.norm(2, dim=1) - center) ** 2).mean() 
+  grad_penalty = ((gradients.norm(2, dim=1) - center) ** p).mean() 
   return grad_penalty 
 
 # parameters

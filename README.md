@@ -73,5 +73,5 @@ To run AWGAN and other benchmarks, we suggest you install the python environment
 # Reference
 Please use:
 
-AWGAN: A Powerful Batch Correction Model for scRNA-seq Data.
+AWGAN: a powerful batch correction model for scRNA-seq data.
 Tianyu Liu, Yuge Wang, Hong-yu Zhao. bioRxiv 2021.11.08.467781; doi: https://doi.org/10.1101/2021.11.08.467781
