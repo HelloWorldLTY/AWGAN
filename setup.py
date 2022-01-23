@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="awgan",
     packages=find_packages(),
-    version='0.0.9',
+    version='0.1.0',
     description="code for model AWGAN",
     author="tianyu liu",
     author_email='tianyul4@illinois.edu',

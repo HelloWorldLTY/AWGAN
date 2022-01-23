@@ -170,8 +170,7 @@ b2 = 0.999
 lambda_1 = 1/10
 
 @jit(nopython = True)
-def determine_batch(val1):
-  val_list =[32,64,128,256]
+def determine_batch(val1,val_list =[32,64,128,256]):
   for i in val_list:
     if val1%i !=1:
       return i
@@ -179,7 +178,7 @@ def determine_batch(val1):
       continue
   return val1
 
-def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1):
+def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1,val_list=[32,64,128,256]):
   stop = 0
   iter = 0
   D = discriminator()
@@ -197,7 +196,7 @@ def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1):
   D.train()
 
   MAX_ITER = train_data.shape[0]
-  batch = determine_batch(MAX_ITER)
+  batch = determine_batch(MAX_ITER,val_list)
 
   train_label = torch.FloatTensor(train_label)
   train_data = torch.FloatTensor(train_data)
