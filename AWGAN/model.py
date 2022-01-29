@@ -18,18 +18,35 @@ import torch.optim.lr_scheduler as lr_s
 from scipy.spatial.distance import cdist
 
 from numba import jit
-#calculate cos distence
-@jit(nopython=True)
+
+@jit(nopython=True) #utilzie numba acceleration
 def pdist(vec1,vec2):
+    """Function utilized to calculate cosine similarity between two vectors, which is called by the old correlation-finding function. 
+
+    Args:
+        vec1: vector1 with numpy format 
+        vec2: vector2 with numpy format
+
+    Output:
+        Float: The cosine similarity of two given vectors. 
+
+    """
   return vec1@vec2/(np.linalg.norm(vec1)*np.linalg.norm(vec2))
 
-#calculate correlation index
-#calculate cos distence
 @jit(nopython=True)
-def find_correlation_index(frame1, frame2):
+def find_correlation_index_old(frame1, frame2):
+    """Function utilized to find the index of NNPs existing in two single-cell RNA sequence profiles (Old version with smaller memory usage but slower running time).
+
+    Args:
+        frame1: count matrix 1 after pre-processing 
+        frame2: count matrix 2 after pre-processing
+
+    Output:
+        result(list): A list containing index pair for NNPs.
+    """
   result=[(1,1) for _ in range(len(frame2))]
   for i in range(len(frame2)):
-    max_dist = -10
+    max_dist = -10 # or -inf
     it1=0
     it2=0
     for j in range(len(frame1)):
@@ -41,8 +58,17 @@ def find_correlation_index(frame1, frame2):
     result[i] = (it1, it2)
   return result
 
-#another method used for calculating correlation index
+
 def find_correlation_index(frame1, frame2):
+    """Function utilized to find the index of NNPs existing in two single-cell RNA sequence profiles (New version with faster running time but larger memory usage).
+
+    Args:
+        frame1: count matrix 1 after pre-processing 
+        frame2: count matrix 2 after pre-processing
+
+    Output:
+        result(list): A list containing index pair for NNPs.
+    """
   distlist =  cdist(frame2,frame1,metric='cosine')
   result = np.argmin(distlist,axis=1)
   result1 = []
@@ -51,6 +77,15 @@ def find_correlation_index(frame1, frame2):
   return result1
 
 def training_set_generator(frame1,frame2,ref,batch):
+    """Function utilized to find the index of NNPs existing in two single-cell RNA sequence profiles (New version with faster running time but larger memory usage).
+
+    Args:
+        frame1: count matrix 1 after pre-processing 
+        frame2: count matrix 2 after pre-processing
+
+    Output:
+        result(list): A list containing index pair for NNPs.
+    """
   common_pair = find_correlation_index(frame1,frame2)
   result = []
   result1 = []
@@ -65,28 +100,30 @@ torch.manual_seed(999)
 torch.cuda.manual_seed_all(999)
 
 class Mish(nn.Module):
+  """A class implementation for the state-of-the-art activation function, Mish.
+  """
   def __init__(self):
     super().__init__()
 
   def forward(self,x):
     return x*torch.tanh(F.softplus(x))
 
-#WGAN model, and it does not need to use bath normalization based on WGAN paper.
+
 class discriminator(nn.Module):
+  """The discrimimator structure of our AWGAN. 
+    Layer: 2000->1024->512->256->128->1
+  """
+
     def __init__(self):
         super(discriminator, self).__init__()
         self.dis = nn.Sequential(
             nn.Linear(2000, 1024),  
-            #nn.BatchNorm1d(1024),
             Mish(),
             nn.Linear(1024, 512),  
-            #nn.BatchNorm1d(512),
             Mish(),
             nn.Linear(512, 256),  
-            #nn.BatchNorm1d(256),
             Mish(),
             nn.Linear(256, 128),  
-            #nn.BatchNorm1d(128),
             Mish(),
             nn.Linear(128, 1)
 
@@ -100,6 +137,9 @@ class discriminator(nn.Module):
 # WGAN generator
 # Require batch normalization
 class generator(nn.Module):
+  """The generator structure of our AWGAN. 
+    Layer: 2000->1024->512->256->512->1024->2000
+  """
     def __init__(self, drop_out=0.5):
         super(generator, self).__init__()
         self.relu_f = nn.ReLU(True)
@@ -134,8 +174,18 @@ class generator(nn.Module):
         gre = self.gen(x)
         return self.relu_f(gre+x)    #residual network
  
-# calculate gradient penalty
 def calculate_gradient_penalty(real_data, fake_data, D, center=1, p=2): 
+    """Function utilized to calculate gradient penalty. This term is used to construct the loss function. 
+    Args:
+       real_data: Tensor of reference (new reference) batch data
+       fake_data: Tensor of query batch data
+       D: The discriminator network 
+       center: K of Lipschitz condition 
+       p: Dimensions of distance 
+
+    Output:
+        result(list): A list containing index pair for NNPs.
+    """
   eta = torch.FloatTensor(real_data.size(0),1).uniform_(0,1) 
   eta = eta.expand(real_data.size(0), real_data.size(1)) 
   cuda = True if torch.cuda.is_available() else False 
@@ -161,16 +211,17 @@ def calculate_gradient_penalty(real_data, fake_data, D, center=1, p=2):
   grad_penalty = ((gradients.norm(2, dim=1) - center) ** p).mean() 
   return grad_penalty 
 
-# parameters
-EPOCH = 100
-# MAX_ITER = train_data.shape[0]
-batch = 4
-b1 = 0.9
-b2 = 0.999
-lambda_1 = 1/10
 
 @jit(nopython = True)
 def determine_batch(val1,val_list =[32,64,128,256]):
+  """Function utilized to determine suitable batch size
+    Args:
+       val1: Input batch size
+       val_list: A list for candidiate batch size
+
+    Output:
+        result(list): A value for suitable batch size to avoid errors in batch correction.
+  """
   for i in val_list:
     if val1%i !=1:
       return i
@@ -179,6 +230,19 @@ def determine_batch(val1,val_list =[32,64,128,256]):
   return val1
 
 def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1,val_list=[32,64,128,256]):
+  """Function utilized to train WGAN. We call it as type1 because we utilize raw fake data to calculate the penalty.
+    Args:
+       train_label: Tensor of reference (new reference) batch data
+       train_data: Tensor of query batch data
+       epoch: The number of iteraiton steps
+       batch: Input batch 
+       lambda_1: A hyperparameter used to control the weights of gradient penalty
+       val_list: A list for candidiate batch size 
+
+    Output:
+        final_list: Results for query batch after batch correction
+        G: The generator of AWGAN
+  """
   stop = 0
   iter = 0
   D = discriminator()
@@ -219,8 +283,6 @@ def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1,val_list=[32,64
       real_out = D(true_data)
       real_label_loss = -torch.mean(real_out)
 
-      # err_D.append(real_label_loss.cpu().float())
-
       # train use WGAN
 
       fake_out_new = G(false_data).detach()
@@ -231,10 +293,10 @@ def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1,val_list=[32,64
       label_loss = real_label_loss+torch.mean(fake_out)+div/lambda_1
       label_loss.backward()
 
-      # err_D.append(label_loss.cpu().item())
+
 
       d_optimizer.step()
-      # scheduler_D.step()
+
   
       #train G
 
@@ -257,12 +319,25 @@ def WGAN_train_type1(train_label,train_data,epoch,batch,lambda_1,val_list=[32,64
   G.eval()
   test_data = train_data
   if torch.cuda.is_available():
-    test_list = G(test_data).detach().cpu().numpy()    
+    final_list = G(test_data).detach().cpu().numpy()    
   else:
-    test_list = G(test_data).detach().numpy()
-  return test_list,G
+    final_list = G(test_data).detach().numpy()
+  return final_list,G
 
 def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
+  """Function utilized to train WGAN. We call it as type2 because we utilize temporary correction data to calculate the penalty.
+    Args:
+       train_label: Tensor of reference (new reference) batch data
+       train_data: Tensor of query batch data
+       epoch: The number of iteraiton steps
+       batch: Input batch 
+       lambda_1: A hyperparameter used to control the weights of gradient penalty
+       val_list: A list for candidiate batch size 
+
+    Output:
+        final_list: Results for query batch after batch correction
+        G: The generator of AWGAN
+  """
   stop = 0
   iter = 0
   D = discriminator()
@@ -338,12 +413,26 @@ def WGAN_train_type2(train_label,train_data,epoch,batch,lambda_1):
   G.eval()
   test_data = train_data
   if torch.cuda.is_available():
-    test_list = G(test_data).detach().cpu().numpy()    
+    final_list = G(test_data).detach().cpu().numpy()    
   else:
-    test_list = G(test_data).detach().numpy()    
-  return test_list,G
+    final_list = G(test_data).detach().numpy()    
+  return final_list,G
 
 def sequencing_train(ref_adata, batch_adata, batch_inf, epoch=100, batch=32, lambda_1=1/10, type_key=1):
+  """Function utilized to train WGAN. We call it as type2 because we utilize temporary correction data to calculate the penalty.
+    Args:
+       ref_adata: Reference batch data 
+       batch_adata: Query batches data (including >=1 batch(es))
+       batch_inf: Batch index
+       epoch: The number of iteraiton steps
+       batch: Input batch 
+       lambda_1: A hyperparameter used to control the weights of gradient penalty
+       type_key:  AWGAN training type 
+
+    Output:
+        ref_data_ori: Final results after batch correction, for the whole dataset
+        G_tar: Final generator
+  """
   ref_data_ori = ref_adata.X
   for bat_inf in batch_inf[1:]:
     print("##########################Training%s#####################"%(bat_inf))
