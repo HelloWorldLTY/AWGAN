@@ -67,7 +67,7 @@ https://scanpy-tutorials.readthedocs.io/en/latest/integrating-data-using-ingest.
 #### 10. Mouse Brain Dataset
 
 <ul>
-    <li>Smart-seq <a href=https://github.com/JinmiaoChenLab/Batch-effect-removal-benchmarking/tree/master/Data/dataset9/downsample>https://github.com/JinmiaoChenLab/Batch-effect-removal-benchmarking/tree/master/Data/dataset8</a></li>
+    <li>Smart-seq <a href=https://github.com/JinmiaoChenLab/Batch-effect-removal-benchmarking/tree/master/Data/dataset8>https://github.com/JinmiaoChenLab/Batch-effect-removal-benchmarking/tree/master/Data/dataset8</a></li>
 
 </ul>
 
