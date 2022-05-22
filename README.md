@@ -1,5 +1,11 @@
+# News!
+The updated version of AWGAN with a new name ResPAN can be found here:https://github.com/AprilYuge/ResPAN.
+
 # AWGAN
 Codes for paper: AWGAN: a powerful batch correction model for scRNA-seq data
+
+
+We refer [WGAN-GP](https://github.com/Zeleni9/pytorch-wgan) and [iMAP](https://github.com/Svvord/iMAP) to construct the deep learning model and train it. 
 
 # Download
 To install this tool, please use this code:
@@ -75,3 +81,4 @@ Please use:
 
 AWGAN: a powerful batch correction model for scRNA-seq data.
 Tianyu Liu, Yuge Wang, Hong-yu Zhao. bioRxiv 2021.11.08.467781; doi: https://doi.org/10.1101/2021.11.08.467781
+
