@@ -1,5 +1,5 @@
 # News!
-The updated version of AWGAN with a new name ResPAN can be found here:https://github.com/AprilYuge/ResPAN.
+The updated version of AWGAN with a new name ResPAN can be found here:https://github.com/AprilYuge/ResPAN. Now this paper has been accepted by *Bioinformatics*.
 
 # AWGAN
 Codes for paper: AWGAN: a powerful batch correction model for scRNA-seq data
